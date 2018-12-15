@@ -32,4 +32,17 @@ public class run_motor {
 			rightMotor.stop();
 		}
 	}
+	public void reset_ran_metor() {
+		leftMotor.resetTachoCount();
+		rightMotor.resetTachoCount();
+	}
+	public int get_ran_metor() {
+		int ran_metor = 0;
+		ran_metor = (leftMotor.getTachoCount() + rightMotor.getTachoCount()) / 2;
+
+		return ran_metor;
+	}
+	public static void line_trace () {
+
+	}
 }

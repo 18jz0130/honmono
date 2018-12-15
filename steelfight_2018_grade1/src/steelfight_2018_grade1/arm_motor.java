@@ -10,6 +10,10 @@ public class arm_motor {
 	static boolean is_catch = false;
 
 
+	arm_motor(){
+		armMotor.resetTachoCount();
+		armMotor.rotateTo(0);
+	}
 	public void arm_control() {
 		if(is_catch == false) {
 			armMotor.rotateTo(0);

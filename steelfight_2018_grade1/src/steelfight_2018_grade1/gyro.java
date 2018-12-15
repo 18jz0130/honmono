@@ -10,9 +10,9 @@ public class gyro {
     static final SensorMode gyro = gyroSensor.getMode(1);
 	static float value[] = new float[gyro.sampleSize()];
 
-    public static float get_angle() {
+    public int get_angle() {
     	gyro.fetchSample(value, 0);
-    	
-		return value[0];
+
+		return (int)value[0];
 	}
 }

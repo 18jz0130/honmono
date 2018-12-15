@@ -10,7 +10,7 @@ import lejos.utility.Delay;
 public class color {
 	static final EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S1);
  	static SensorMode color = colorSensor.getMode(2);
- 	static float color_value[][] = new float[6][color.sampleSize()];// 追加
+ 	float color_value[][] = new float[6][color.sampleSize()];// 追加
     static float[] Value = new float[color.sampleSize()];
  	static int now_color = 0;
 
@@ -36,7 +36,7 @@ public class color {
 		 	}
 		 }
 
-	    LCD.drawString(colors[now_color], 0, 7);
+	    LCD.drawString(colors[now_color], 0, 6);
 	    Delay.msDelay(10L);
  		return now_color;
  	 }
