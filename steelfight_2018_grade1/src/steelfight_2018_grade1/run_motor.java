@@ -61,7 +61,16 @@ public class run_motor {
 	}
 	//即席だよ？直したほうがいいと思うよ？
 
-	public void turning() {
+
+	public void turning(int gyro_angle, int let_angle) {
+		if (gyro_angle < let_angle) {
+			motor_wheel( -50,  50);
+		}else{
+			motor_wheel(  50, -50);
+		}
+	}
+
+	/*public void turning() {
 		if( turn_memory_l  > turn_memory_r) {
 			if(turn_memory_l > turn_memory_r / 2) {
 				turn_memory_l += 1;
@@ -73,6 +82,7 @@ public class run_motor {
 		}
 		motor_wheel(turn_memory_l, turn_memory_r);
 	}
+	*/
 	public int get_ran_metor() {
 		int ran_metor = 0;
 		ran_metor = (leftMotor.getTachoCount() + rightMotor.getTachoCount()) / 2;

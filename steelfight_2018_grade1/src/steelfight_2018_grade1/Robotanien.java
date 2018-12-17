@@ -34,12 +34,12 @@ public class Robotanien {
 			//						逆方向 R < L の場合 右側トレース 緑の場合Lが強く、白の場合Rが強くなります
 			//       L,    R
 		/*[0]*/	{  360,  360},//スタート ～ 白色の地面まで
-				{   60,   45},//ライントレース時の速度 カラー見て左右反転させます 青を見つけるまで ここから[4]まで使いまわす
-				{   60,   60},//青発見～ワーク設置まで
-				{  -30,  -30},//ワーク設置～ライントレース開始まで  バック → 回転 → バック
-				{  -45,  -60},//バックしながらライントレース
-		/*[5]*/	{   60,   60},//ワーク探して進行
-				{   60,   45},//ワーク捕獲後、旋回しながらラインへ
+				{  720,  690},//ライントレース時の速度 カラー見て左右反転させます 青を見つけるまで ここから[4]まで使いまわす
+				{  360,  360},//青発見～ワーク設置まで
+				{ -120, -120},//ワーク設置～ライントレース開始まで  バック → 回転 → バック
+				{ -720, -720},//バックしながらライントレース
+		/*[5]*/	{  360,  360},//ワーク探して進行
+				{  360,  360},//ワーク捕獲後、旋回しながらラインへ
 
 
 
@@ -47,7 +47,7 @@ public class Robotanien {
 
 		while ( ! Button.ESCAPE.isDown()){
 			//LCD.drawString("" + arm.arm_control(), 0, 0);
-
+			int get_uls_metor = 0;
 			switch(now_story) {
 /**************************************************************************/
 			case 0:		/////////////スタート キャリブレーション必要か判定////////////////////////
@@ -56,6 +56,8 @@ public class Robotanien {
 				}else {
 					if(reader.story(Button.ENTER.isDown(), true)) {
 						now_story = 5;
+					}else if(reader.story(Button.UP.isDown(), true)) {
+						now_story = 1;
 					}
 				}
 				break;
@@ -85,7 +87,11 @@ public class Robotanien {
 				}
 				break;
 /**************************************************************************/
-			case 5:		///////////////////////白を見つけるまで直進///////////////////////
+			case 5:
+				run_motor.reset_ran_metor();
+				now_story = 6;
+				break;
+			case 6:		///////////////////////白を見つけるまで直進///////////////////////
 				///*直進*///
 				run_motor.motor_set(speeds[0][0],speeds[0][1],now_story);
 				if (reader.story(color.get_color(), white)) {
@@ -96,7 +102,8 @@ public class Robotanien {
 /**************************************************************************/
 			case 10:	///////////////////////ライントレース/////////////////
 				run_motor.line_trace(speeds[1][0],speeds[1][1], color.get_color(), green);
-				if(reader.story(color.get_color(), blue)) {
+				LCD.drawString("ran " + run_motor.get_ran_metor(), 1, 1);
+				if(reader.story(color.get_color(), blue)/* && reader.story(run_motor.get_ran_metor(), 1200, true)*/) {
 					now_story = 15;
 				}
 				break;
@@ -108,7 +115,7 @@ public class Robotanien {
 			case 16:	//////////////////////ワーク置くまで直進///////////////////
 				LCD.drawString("ran " + run_motor.get_ran_metor(), 1, 1);
 				run_motor.motor_set(speeds[2][0], speeds[2][1], now_story);
-				if(reader.story(run_motor.get_ran_metor(), 300, true)) {
+				if(reader.story(run_motor.get_ran_metor(), 320, true)) {
 					now_story = 20;
 				}
 				break;
@@ -120,7 +127,7 @@ public class Robotanien {
 				}
 				break;
 			case 21:	/////////////////////少し曲がるための回転///////////////////////////
-				run_motor.motor_set(10, -10, now_story);
+				run_motor.motor_set(50, -50, now_story);
 				if(reader.story(gyro.get_angle(), 10)) {
 					now_story = 22;
 				}
@@ -136,25 +143,25 @@ public class Robotanien {
 					now_story = 25;
 				}
 				break;
+/**************************************************************************/
 			case 25:	//////////////////////バックライントレースのためのタコメリセット////////////////
 				run_motor.reset_ran_metor();
 				now_story = 26;
-/**************************************************************************/
 			case 26:	////////////////バックでライントレース,ワークの並ぶ位置まで//////////////////
 				LCD.drawString("ran " + run_motor.get_ran_metor(), 1, 1);
 				run_motor.line_trace(speeds[4][0],speeds[4][1], color.get_color(), green);
-				if(reader.story(run_motor.get_ran_metor(), -300, false)) {
+				if(reader.story(run_motor.get_ran_metor(), -1200, false)) {
 					now_story = 30;
 				}
 				break;
 /**************************************************************************/
-			case 30:	///////////////////90度回転用///////////////////////
+			case 30:	///////////////////左のを取る-90度回転用///////////////////////
 				LCD.clear();
 				now_story = 31;
 				break;
-			case 31:	////////////////////////90度回転/////////////////////////////////
-				run_motor.motor_set( 10, -10, now_story);
-				if(reader.story(gyro.get_angle(), 90, true)) {
+			case 31:	////////////////////////-90度回転/////////////////////////////////
+				run_motor.motor_set( 50, -50, now_story);
+				if(reader.story(gyro.get_angle(), -90, false)) {
 					now_story = 35;
 				}
 				LCD.drawString("angle = " + gyro.get_angle(), 1, 1);
@@ -166,7 +173,41 @@ public class Robotanien {
 				break;
 			case 36:	///////////////////////ワークまで直進/////////////////
 				run_motor.motor_set(speeds[5][0], speeds[5][1], now_story);
-				if(reader.story(run_motor.get_ran_metor(), 200)) {
+				if(reader.story(run_motor.get_ran_metor(), 300, true)) {
+					run_motor.reset_ran_metor();
+					now_story = 37;
+				}
+				break;
+			case 37:
+				get_uls_metor = sonic.get_ss_metor();
+				LCD.drawString("" + get_uls_metor, 0, 1);
+				Delay.msDelay(5000);
+				if(reader.story(get_uls_metor, 15, false)) {
+					now_story = 39;
+				}else{
+					//サーチ
+					run_motor.motor_set(50, -50, now_story);
+					if(gyro.get_angle() < -120){
+							now_story = 38;
+					}
+				}
+				break;
+			case 38:
+				get_uls_metor = sonic.get_ss_metor();
+				if(reader.story(get_uls_metor, 15, false)) {
+					run_motor.reset_ran_metor();
+					now_story = 39;
+				}else{
+					//サーチ
+					run_motor.motor_set(-50, 50, now_story);
+					if(gyro.get_angle() > -60){
+							now_story = 37;
+					}
+				}
+				break;
+			case 39:
+				run_motor.motor_set(speeds[5][0], speeds[5][1], now_story);
+				if(reader.story(run_motor.get_ran_metor(), get_uls_metor, true )) {
 					now_story = 40;
 				}
 				break;
@@ -236,7 +277,7 @@ public class Robotanien {
 					now_story = 80;
 				}
 				break;
-/*ここから*************************************************************************/
+/**************************************************************************/
 			case 80:	////////////////バックでライントレース,ワークの並ぶ位置まで//////////////////
 				LCD.drawString("ran " + run_motor.get_ran_metor(), 1, 1);
 				run_motor.line_trace(speeds[4][0],speeds[4][1], color.get_color(), green);
