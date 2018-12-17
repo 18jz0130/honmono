@@ -64,11 +64,11 @@ public class run_motor {
 	public void turning() {
 		if( turn_memory_l  > turn_memory_r) {
 			if(turn_memory_l > turn_memory_r / 2) {
-				turn_memory_l -= 1;
+				turn_memory_l += 1;
 			}
 		}else if( turn_memory_l < turn_memory_r) {
 			if(turn_memory_l / 2 < turn_memory_r) {
-				turn_memory_l -= 1;
+				turn_memory_l += 1;
 			}
 		}
 		motor_wheel(turn_memory_l, turn_memory_r);

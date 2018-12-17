@@ -13,6 +13,23 @@ public class color {
     static float[] Value = new float[color.sampleSize()];
  	static int now_color = 0;
  	static int k;
+ 	color(){
+ 	 	color_value[0][0] = 34.0f;
+ 	 	color_value[0][1] = 44.0f;
+ 	 	color_value[0][2] = 33.0f;
+ 	 	color_value[1][0] = 34.0f;
+ 	 	color_value[1][1] = 26.0f;
+ 	 	color_value[1][2] = 3.0f;
+ 	 	color_value[2][0] = 5.0f;
+ 	 	color_value[2][1] = 20.0f;
+ 	 	color_value[2][2] = 5.0f;
+ 	 	color_value[3][0] = 14.0f;
+ 	 	color_value[3][1] = 12.0f;
+ 	 	color_value[3][2] = 19.0f;
+ 	 	color_value[4][0] = 27.0f;
+ 	 	color_value[4][1] = 8.0f;
+ 	 	color_value[4][2] = 3.0f;
+ 	}
  	public int get_color() {
 	    String[] colors = new String[]{"white   ", "yellow  ", "green   ", "blue    ", "red     ", "エラー"};
 
