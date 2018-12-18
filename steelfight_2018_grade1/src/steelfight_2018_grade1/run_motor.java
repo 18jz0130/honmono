@@ -64,6 +64,13 @@ public class run_motor {
 	}
 	//即席だよ？直したほうがいいと思うよ？
 
+	public void rota(boolean LR) {
+		if(LR == true) {
+			motor_wheel(-50,50);
+		}else {
+			motor_wheel(50,-50);
+		}
+	}
 
 	public void turning(int set_metor, int now_metor, int l_motor_pow, int r_motor_pow) {
 		if(set_metor / 2 > now_metor) {

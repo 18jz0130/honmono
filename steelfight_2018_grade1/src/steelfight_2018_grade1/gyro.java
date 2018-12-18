@@ -15,4 +15,7 @@ public class gyro {
 
 		return (int)value[0];
 	}
+    public static void reset() {
+    	gyroSensor.reset();
+    }
 }
