@@ -47,11 +47,14 @@ public class run_motor {
 		rightMotor.resetTachoCount();
 	}
 
-	public void line_trace(int l_motor_pow, int r_motor_pow, int color, int trace_color) {
+	public void line_trace(int l_motor_pow, int r_motor_pow, int color, int trace_color, int trace_color2){
 		if( color == trace_color) {
+			motor_set(l_motor_pow, l_motor_pow, color);
+		}else if (color == trace_color2){
 			motor_set(l_motor_pow,r_motor_pow, color);
-		}else{
+		}else {
 			motor_set(r_motor_pow,l_motor_pow, color);
+
 		}
 	}
 	public void turning_set(int l_motor_pow, int r_motor_pow) {
@@ -62,11 +65,11 @@ public class run_motor {
 	//即席だよ？直したほうがいいと思うよ？
 
 
-	public void turning(int gyro_angle, int let_angle) {
-		if (gyro_angle < let_angle) {
-			motor_wheel( -50,  50);
-		}else{
-			motor_wheel(  50, -50);
+	public void turning(int set_metor, int now_metor, int l_motor_pow, int r_motor_pow) {
+		if(set_metor / 2 > now_metor) {
+			motor_wheel(l_motor_pow, r_motor_pow);
+		}else {
+			motor_wheel(r_motor_pow, l_motor_pow);
 		}
 	}
 

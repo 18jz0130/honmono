@@ -17,6 +17,11 @@ public class ultrasonic {
 		/*for (int k = 0 ; k < sonic.sampleSize() ; k++) {
 			LCD.drawString("val[" + k +"] :" + value[k] +" m", 1, k + 5);
 		}*/
-		return (int)value[0];
+		if(-0.05 < value[0] && value[0] < 0.05) {
+			return 0;
+		}else {
+			int res = (int)(value[0] * 100);
+			return res;
+		}
 	}
 }
